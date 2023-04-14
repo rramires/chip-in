@@ -1,4 +1,4 @@
-// SPDX-Licence-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 // solidity version
 pragma solidity ^0.8.17;
@@ -84,7 +84,9 @@ contract DonateCrypto{
         // get author address to receive
         address payable recipient = payable(campaign.author);
         // pays the balance to the author, discounting the system fee
-        recipient.call{value: campaign.balance - fee}("");
+        (bool success, ) = recipient.call{value: campaign.balance - fee}("");
+        // validate
+        require(success, "Failed to send value");
         // desactivate campaign
         campaigns[id].active = false;
     }
