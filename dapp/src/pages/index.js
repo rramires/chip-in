@@ -1,7 +1,20 @@
 import Head from 'next/head'
 import Footer from '@/components/Footer'
+import { useState } from 'react';
+import { doLogin } from '@/services/Web3Service'
 
 export default function Home() {
+
+  // states
+  const [wallet, setWallet] = useState("");
+  const [error, setError] = useState("");
+
+  function onConnectClick(){
+    doLogin()
+      .then(wallet => setWallet(wallet))
+      .catch(error => setError(error))
+  }
+
   return (
     <>
       <Head>
@@ -20,11 +33,15 @@ export default function Home() {
             <p className='lead'>Your decentralized donation platform.</p>
             <p className='lead mb-3'>Authenticate with your wallet, create your campaign or donate to existing campaigns.</p>
             <div className='d-grid gap-2 d-md-flex justify-content-md-start'>
-              <button className='btn btn-primary btn-lg px-4 me-md-2' type='button'>
+              <button className='btn btn-primary btn-lg px-4 me-md-2' 
+                      type='button'
+                      onClick={onConnectClick}>
                 <img className='me-3' width='64' src='/metamask.svg' />
                 Connect with your wallet
               </button>
             </div>
+            {wallet ?? `Wallet Address:${wallet}`}
+            {error ?? `Error:${error}`}
           </div>
         </div>
         <Footer />
