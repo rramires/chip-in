@@ -61,6 +61,24 @@ export async function addCampaign(campaign){
  */
 export function getLastCampaignId() {
     const contract = getContract();
-    //use call, to read data
+    // use call, to read data
     return contract.methods.nextId().call();
+}
+
+
+/**
+ * Return campaign by ID
+ */
+export function getCampaignById(id) {
+    const contract = getContract();
+    return contract.methods.campaigns(id).call();
+}
+
+
+/**
+ * Donate crypto
+ */
+export function donate(id, donation) {
+    const contract = getContract();
+    return contract.methods.donate(id).send({ value: Web3.utils.toWei(donation, "ether") });
 }
