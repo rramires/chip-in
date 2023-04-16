@@ -16,3 +16,13 @@ export async function doLogin() {
     //
     return accounts[0];
 }
+
+
+export async function addCampaign(){
+
+}
+
+
+export async function getLastCampaignId(){
+    
+}
