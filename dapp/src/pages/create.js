@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import Footer from "@/components/Footer";
+import { addCampaign, getLastCampaignId } from "../services/Web3Service";
 
 
 export default function Create(){
@@ -14,8 +15,14 @@ export default function Create(){
     }
 
     function onSaveClick() {
-        // test
-        alert(JSON.stringify(campaign));
+        setMessage("Saving, please wait...");
+        addCampaign(campaign)
+            .then(tx => getLastCampaignId())
+            .then(id => setMessage(`Campaign saved with ID: ${id} Let your friends know and give them that number.`))
+            .catch(err => {
+                console.error(err);
+                setMessage(err.message);
+            })
     }
 
     return (
@@ -34,19 +41,19 @@ export default function Create(){
                 <div className="col-6">
                     <div className="form-floating mb-3">
                         <input type="text" id="title" className="form-control" value={campaign.title} onChange={onInputChange} />
-                        <label for="title">Title:</label>
+                        <label htmlFor="title">Title:</label>
                     </div>
                     <div className="form-floating mb-3">
                         <textarea id="description" className="form-control" value={campaign.description} onChange={onInputChange} />
-                        <label for="description">Description:</label>
+                        <label htmlFor="description">Description:</label>
                     </div>
                     <div className="form-floating mb-3">
                         <input type="text" id="imageUrl" className="form-control" value={campaign.imageUrl} onChange={onInputChange} />
-                        <label for="imageUrl">Image URL:</label>
+                        <label htmlFor="imageUrl">Image URL:</label>
                     </div>
                     <div className="form-floating mb-3">
                         <input type="text" id="videoUrl" className="form-control" value={campaign.videoUrl} onChange={onInputChange} />
-                        <label for="videoUrl">Video URL:</label>
+                        <label htmlFor="videoUrl">Video URL:</label>
                     </div>
                 </div>
                 <div className="col-6 mb-3">
